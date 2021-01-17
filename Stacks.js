@@ -2,23 +2,24 @@ class Node {
   constructor(color,number, next = null) {
     this.color = color;
     this.number = number;
+    this.next= next;
   }
 
-  getDate = () => `${this.number} ${this.color}`;
+  getDate = () => `${this.number} - ${this.color}`;
 }
 
 class Stack {
   constructor(limit = 20) {
     this.top = null;
-    this.size = 0;
+    this.length = 0;
     this.limit = limit;
   }
 
-  isFull = () => this.size === this.size;
+  isFull = () => this.length === this.limit;
 
-  isEmpty = () => this.size === 0;
+  isEmpty = () => this.length === 0;
 
-  peek = () => (this.isEmpty() ? "No cards left in the deck!" : this.top.getDate());
+  peek = () => this.isEmpty() ? "No cards left in the deck!" : this.top.getDate();
 
   push = (color,number) => {
     if (this.isFull()) {
@@ -26,7 +27,7 @@ class Stack {
     } else {
       const newNode = new Node(color,number, this.top);
       this.top = newNode;
-      this.size++;
+      this.length++;
     }
   };
 
@@ -36,24 +37,24 @@ class Stack {
     } else {
       const popped = this.top;
       this.top = popped.next;
-      this.size--;
+      this.length--;
       return popped.getDate();
     }
   };
 }
 
-const color= ["red","blue","green","yellow"];
-const number= [1,2,3,4,5,6,7,8,9];
+const colors = ["red","blue","green","yellow"];
+const numbers = ["1","2","3","4","5","6","7","8","9"];
 
-const desk = new Stack();
+const deck = new Stack(52);
 const random =(array) => {
-  const randomIndex = Math.floor(Math.random() * array.size);
+  const randomIndex = Math.floor(Math.random() * array.length);
   return array[randomIndex];
 };
 
-while (!desk.isFull()){
-  let color = rondom(color);
-  let number = random(number);
+while (!deck.isFull()){
+  let color = random(colors);
+  let number = random(numbers);
   deck.push(color,number);
 }
 
@@ -65,9 +66,11 @@ for (let i =0; i < 5; i++){
   Player2cards.push(deck.pop());
 }
 
-console.table(random(Player1cards));
-console.table(random(Player2cards));
-console.log(`First card in deck: ${random(color)} - ${deck.peek()}` );
+console.log("First Player Cards:");
+console.table(Player1cards);
+console.log("Second Player Cards:");
+console.table(Player2cards);
+console.log(`First card in deck:`,deck.peek() );
 
 //console.log(random(color));
 //console.log(random(number));
