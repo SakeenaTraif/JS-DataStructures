@@ -1,31 +1,30 @@
-const prompt = require('prompt-sync')({sigint: true});
+const prompt = require("prompt-sync")({ sigint: true });
 
-class Trees{
-    constructor (name) {
-    this.name=name;
-    this.Child =[];
-}
+class TreeNode {
+  constructor(name) {
+    this.name = name;
+    this.children = [];
+  }
 
-addChild = (node) => {
-    if (parent.nodes >= 2)
-    this.children.push(node);
+  addChild = (node) => {
+    if (this.children.length < 2) {
+      this.children.push(node);
+      console.log(`${node.name} child of ${this.name}`);
+    } else console.log("Child is an orphan.");
   };
 
-// Steps: reverse the name input 
-// asign first name as parent
-// add nodes
-// count nodes
-
-  revers = (name) => {
-    name.spilt("").reverse().joine(" ")
-    let parent = ;
- };
-
-
+  getChildWithName = (name) => {
+    for (let child of this.children) {
+      if (child.name === name) {
+        return child;
+      }
+    }
+    return null;
+  };
 
   traverse = () => {
     let nodes = [this];
-    while (nodes.length > 2) {
+    while (nodes.length > 0) {
       let current = nodes.pop();
       console.log(current.name);
       nodes = [...nodes, ...current.children];
@@ -33,7 +32,35 @@ addChild = (node) => {
   };
 }
 
-const parent = new TreeNode();
-parent.addChild(name);
+const root = new TreeNode("Traif");
+let fullName = prompt("Enter name of child (type 'done' if you're finished): ");
 
-const name = prompt("What's your full name?!");
+while (fullName !== "done") {
+  let current = root;
+
+  let names = fullName.split(" ").reverse();
+  let firstName = names.pop();
+  let lastName = names.shift();
+
+  if (lastName === current.name) {
+    if (names) {
+      for (let name of names) {
+        let child = current.getChildWithName(name);
+        if (child) {
+          current = child;
+        } else {
+          let newNode = new TreeNode(name);
+          current.addChild(newNode);
+          current = newNode;
+        }
+      }
+    }
+    let newNode = new TreeNode(firstName);
+    current.addChild(newNode);
+  }
+
+  console.log("--------------------------------------------------");
+  fullName = prompt("Enter name of child (type 'done' if you're finished): ");
+}
+
+root.traverse();

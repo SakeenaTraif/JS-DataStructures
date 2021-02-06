@@ -1,33 +1,4 @@
-class HashTable{
-    constructor(classSize){
-      this.classSize = classSize;
-      this.classes = {A: [], B: [], C: [], D: [], Other: []};
-    }
-}
-
-class Section {
-    constructor(limit = 15) {
-      this.length = 0;
-      this.limit = limit;
-    }
-}
-
-insert = (name, score) => {
-    if (students.score >= 90) push(this.HashTable.classes.push.A[name, score]);
-    else if (score < 90 && score >= 80) push(this.HashTable.classes.B[name,score]);
-    else if (score < 80 && score >= 70) push(this.HashTable.classes.C[name, score]);
-    else if (score < 70 && score >= 60) push(this.HashTable.classes.D[name, score]);
-    else  console.log(`Won't be joining any class!`);
-
-    return this.classes;
-
-};
-
-// Checking the length for each class
-Max = (classes) => {
-if (classes.A === this.limit) console.log("The Section is full!");
-};
-
+const prompt = require("prompt-sync")({ sigint: true });
 
 const students = [
     { name: "Jean-Luc Garza", score: 24 },
@@ -57,7 +28,57 @@ const students = [
     { name: "Baran Davidson", score: 43 },
     { name: "Seth Rodriguezh", score: 67 },
     { name: "Diego Mayer", score: 100 },
-]
+];
 
-    let hashTable = new HashTable();
-    console.log(insert.students);
+
+class HashTable{
+    constructor(classSize){
+      this.classSize = classSize;
+      this.classes = {A: [], B: [], C: [], D: [], Other: []};
+    }
+
+    hash = (score) => {
+        if (score >= 90) {
+          return "A";
+        } else if (score >= 80) {
+          return "B";
+        } else if (score >= 70) {
+          return "C";
+        } else if (score >= 60) {
+          return "D";
+        } else {
+          return "Other";
+        }
+      };
+
+      insert = (name, score) => {
+        const classroom = this.hash(score);
+        if (this.classes[classroom].length < this.classSize)
+          //   this.classes[classroom].push({ name, score });
+          this.classes[classroom].push(name);
+
+        };
+    }
+      
+    //   insert = (name, score) => {
+    //     if (students.score >= 90) push(this.HashTable.classes.push.A[name, score]);
+    //     else if (score < 90 && score >= 80) push(this.HashTable.classes.B[name,score]);
+    //     else if (score < 80 && score >= 70) push(this.HashTable.classes.C[name, score]);
+    //     else if (score < 70 && score >= 60) push(this.HashTable.classes.D[name, score]);
+    //     else  console.log(`Won't be joining any class!`);
+    
+    //     return this.classes;
+    
+
+    const size = prompt("How many noobs can be in one class?");
+    const table = new HashTable(size);
+    
+    students.forEach((student) => {
+      table.insert(student.name, student.score);
+    });
+    
+    console.log(table.classes);
+    // for (let element of Object.entries(table.classes)) {
+    //   console.log(`CLASSROOM ${element[0]}`);
+    //   console.table(element[1]);
+    // }
